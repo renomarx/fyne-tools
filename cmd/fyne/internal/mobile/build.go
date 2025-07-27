@@ -231,13 +231,17 @@ var (
 )
 
 // RunNewBuild executes a new mobile build for the specified configuration
-func RunNewBuild(target, appID, icon, name, version string, build int, release, distribution bool, cert, profile string, tags []string) error {
+func RunNewBuild(target, appID, icon, name, version string, build int, release, distribution bool, cert, profile string, tags []string, ldflags string) error {
 	buildTarget = target
 	buildBundleID = appID
 	buildRelease = distribution
 	buildTags = tags
+	buildLdflags = ldflags
 	if release {
-		buildLdflags = "-w"
+		if buildLdflags != "" {
+			buildLdflags += " "
+		}
+		buildLdflags += "-w"
 		buildTrimpath = true
 	}
 

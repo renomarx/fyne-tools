@@ -13,12 +13,12 @@ import (
 	"fyne.io/tools/cmd/fyne/internal/templates"
 )
 
-func (p *Packager) packageAndroid(arch string, tags []string) error {
-	return mobile.RunNewBuild(arch, p.AppID, p.icon, p.Name, p.AppVersion, p.AppBuild, p.release, p.distribution, "", "", tags)
+func (p *Packager) packageAndroid(arch string, tags []string, ldflags string) error {
+	return mobile.RunNewBuild(arch, p.AppID, p.icon, p.Name, p.AppVersion, p.AppBuild, p.release, p.distribution, "", "", tags, ldflags)
 }
 
-func (p *Packager) packageIOS(target string, tags []string) error {
-	err := mobile.RunNewBuild(target, p.AppID, p.icon, p.Name, p.AppVersion, p.AppBuild, p.release, p.distribution, p.certificate, p.profile, tags)
+func (p *Packager) packageIOS(target string, tags []string, ldflags string) error {
+	err := mobile.RunNewBuild(target, p.AppID, p.icon, p.Name, p.AppVersion, p.AppBuild, p.release, p.distribution, p.certificate, p.profile, tags, ldflags)
 	if err != nil {
 		return err
 	}

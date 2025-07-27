@@ -188,6 +188,13 @@ var stringFlags = map[string]func(*string) cli.Flag{
 			Destination: dst,
 		}
 	},
+	"ldflags": func(dst *string) cli.Flag {
+		return &cli.StringFlag{
+			Name:        "ldflags",
+			Usage:       "ldflags passed to go build (WIP: mobile only)",
+			Destination: dst,
+		}
+	},
 }
 
 var boolFlags = map[string]func(*bool) cli.Flag{

@@ -9,6 +9,7 @@
 *.dylib
 .idea
 cmd/fyne/fyne
+fyne-tools
 
 # Test binary, built with `go test -c`
 *.test

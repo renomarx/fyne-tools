@@ -53,6 +53,7 @@ func Package() *cli.Command {
 			stringFlags["profile"](&p.profile),
 			boolFlags["release"](&p.release),
 			genericFlags["metadata"](&p.customMetadata),
+			stringFlags["ldflags"](&p.ldflags),
 		},
 		Action: func(_ *cli.Context) error {
 			if p.customMetadata.m == nil {
@@ -73,6 +74,7 @@ type Packager struct {
 	tags, category                 string
 	tempDir                        string
 	langs                          []string
+	ldflags                        string
 
 	customMetadata      keyValueFlag
 	linuxAndBSDMetadata *metadata.LinuxAndBSD
@@ -98,6 +100,7 @@ func (p *Packager) AddFlags() {
 	flag.IntVar(&p.AppBuild, "app-build", 0, "Build number, should be greater than 0 and incremented for each build")
 	flag.BoolVar(&p.release, "release", false, "Should this package be prepared for release? (disable debug etc)")
 	flag.StringVar(&p.tags, "tags", "", "A comma-separated list of build tags")
+	flag.StringVar(&p.ldflags, "ldflags", "", "ldflags passed to go build (WIP: mobile only)")
 }
 
 // PrintHelp prints the help for the package command.
@@ -221,9 +224,9 @@ func (p *Packager) doPackage(runner runner) error {
 	case "windows":
 		return p.packageWindows(tags)
 	case "android/arm", "android/arm64", "android/amd64", "android/386", "android":
-		return p.packageAndroid(p.os, tags)
+		return p.packageAndroid(p.os, tags, p.ldflags)
 	case "ios", "iossimulator":
-		return p.packageIOS(p.os, tags)
+		return p.packageIOS(p.os, tags, p.ldflags)
 	case "web", "wasm":
 		return p.packageWasm()
 	default:
