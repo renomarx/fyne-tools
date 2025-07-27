@@ -11,6 +11,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"regexp"
@@ -143,7 +144,8 @@ func runBuildImpl(cmd *command) (*packages.Package, error) {
 	}
 
 	if !nmpkgs["fyne.io/fyne/v2/internal/driver/mobile/app"] {
-		return nil, fmt.Errorf(`%s does not import "fyne.io/fyne/v2/internal/driver/mobile/app"`, pkg.PkgPath)
+		log.Printf(`WARNING: %s does not import "fyne.io/fyne/v2/internal/driver/mobile/app"`, pkg.PkgPath)
+		return pkg, nil
 	}
 
 	return pkg, nil
